@@ -1,0 +1,71 @@
+<template>
+    <div class="select__block slds-form-element select">
+        <label class="slds-form-element__label" for="select-01">
+            <abbr class="slds-required" title="required">* </abbr>Select object</label>
+        <div class="slds-form-element__control">
+            <div class="slds-select_container">
+                <select class="slds-select" id="select-01" required="" onchange={selectObject}>
+                    <template for:each={objects} for:item="object">
+                        <option key={object.Id} value={object.Id}>{object.Name}</option>
+                    </template>
+                </select>
+            </div>
+        </div>
+    </div>
+    <template if:true={objectInfo}>
+        <div class="object__block">
+            <template if:true={objectInfo.data}>
+                <p class="slds-text-title_caps title">Object information:</p>
+                <img class="icon" src={objectInfo.data.themeInfo.iconUrl}>
+                <table>
+                    <template for:each={objectInformation} for:item="object">
+                        <tr key={object.k}>
+                            <th>{object.k}</th>
+                            <td>{object.v}</td>
+                        </tr>
+                    </template>
+                </table>
+            </template>
+            <template if:true={objectInfo.error}>
+                <p class="slds-text-title_caps">you do not have permission to view this object.</p>
+            </template>
+        </div>
+    </template>
+    <template if:true={objectInfo}>
+        <template if:true={objectInfo.data}>
+            <template if:true={objectInfo.data.fields}>
+                <div class="fields-block">
+                    <p class="slds-text-title_caps title">Fields Information:</p>
+                    <table>
+                        <thead>
+                            <tr class="table__header">
+                                <th>
+                                    <div class="slds-truncate" title="Field Name">Field Name:</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="DataType">DataType:</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Length">Length:</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Scale">Scale:</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={objectFields} for:item="object">
+                                <tr key={object.key}>
+                                    <th>{object.key}</th>
+                                    <td>{object.datatype}</td>
+                                    <td>{object.length}</td>
+                                    <td>{object.scale}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+        </template>
+    </template>
+</template>
