@@ -25,7 +25,7 @@ export default class ChildAuditor extends LightningElement {
     caseId;
 
     objectInfo;
-    objectNew;
+    searchProperties;
 
     connectedCallback(){
         [this.objectName, this.recordId] = window.location.pathname.split('/').slice(3,5);
@@ -62,25 +62,23 @@ export default class ChildAuditor extends LightningElement {
     objectInfo({data,error}) {
         if(data) {
             this.objectInfo = data;
-            this.objectNew = this.objectInfo?.childRelationships.map( row => {
+            this.searchProperties = this.objectInfo?.childRelationships.map( row => {
                 return ({childObjectApiName: row.childObjectApiName, fieldName: row.fieldName})
             });
-            console.log(this.objectNew);
+            console.log(this.searchProperties);
         } else if(error) {
             console.log(error);
         }
     }
 
-    // @wire(getChildRelationships, { recordId: '$recordId', 
-    // properties: this.objectInfo?.data?.childRelationships, objectName: "$objectName"
-    // })
-    // wiredResults({data,error}){
-    //     if(data) {
-    //         console.log(data);
-    //     } else if(error) {
-    //         console.log(error);
-    //     }
-    // }
+    @wire(getChildRelationships, { recordId: '$recordId', objectName: "$objectName" })
+    wiredResults({data,error}){
+        if(data) {
+            console.log(data);
+        } else if(error) {
+            console.log(error);
+        }
+    }
     
     // @wire(getContactChildRecords,{contactId: '$contactId'})
     // wiredResult(value) {
