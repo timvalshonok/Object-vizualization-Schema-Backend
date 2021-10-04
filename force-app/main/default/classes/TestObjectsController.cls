@@ -10,4 +10,3 @@ public with sharing class TestObjectsController {
         System.assert(actual.containsKey('Account'), 'Should contain Account object');
     }
 }
-
