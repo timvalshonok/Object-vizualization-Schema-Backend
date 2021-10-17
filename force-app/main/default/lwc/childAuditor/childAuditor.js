@@ -68,7 +68,7 @@
 import { LightningElement, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { refreshApex } from '@salesforce/apex';
-import getRelatedChilds from '@salesforce/apex/ChildObjectsController.getRelatedChilds';
+import getChildrelationships from '@salesforce/apex/ChildObjectsController.getChildrelationships';
 
  export default class ChildAuditor extends LightningElement {
 
@@ -97,11 +97,11 @@ import getRelatedChilds from '@salesforce/apex/ChildObjectsController.getRelated
         data.forEach((child) => {
             childRelationships[child.childObjectApiName] = child.fieldName;
         })
-        getRelatedChilds({childRelationships: childRelationships, recordId: this.recordId})
+        getChildrelationships({childRelationships: childRelationships, recordId: this.recordId})
         .then((result) => {
             let childObjects = [];
             Object.keys(result).forEach((key) => {
-                childObjects.push({row: key, value: result[key]});
+                childObjects.push({field: key, value: result[key]});
             })
             this.childObjects = childObjects;
         })

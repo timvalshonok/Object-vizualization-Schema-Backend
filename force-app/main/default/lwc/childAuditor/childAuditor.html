@@ -1,17 +1,7 @@
-<!-- <template>
-    <lightning-card title="Child auditor">
-        <template for:each={childObjects} for:item="object">
-            <p key={object.key}>{object.key} - {object.value} records</p>
-        </template>
-        <lightning-button class="button" label="Refresh" onclick={refreshComponent} variant="brand">
-        </lightning-button>
-    </lightning-card>
-</template> -->
-
 <template>
     <lightning-card  title="Child auditor">
         <template for:each={childObjects} for:item="object">
-            <p key={object.row}>{object.row} - {object.value} records</p> 
+            <p key={object.field}>{object.field} - {object.value} records</p> 
         </template>
         <lightning-button label="Refresh" variant="brand" onclick={refreshComponent}></lightning-button>
     </lightning-card>

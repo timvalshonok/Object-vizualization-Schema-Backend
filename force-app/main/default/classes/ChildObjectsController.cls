@@ -26,47 +26,28 @@
 //     }
 // }
 
-// DescribeSObjectResult describeResult = Account.SObjectType.getDescribe();
-// for (ChildRelationship childRelation : describeResult.getChildRelationships()) {
-//     if(childRelation != null && childRelation.getChildSObject().getDescribe().isQueryable() && 
-//     childRelation.getChildSObject().getDescribe().isCreateable() && 
-//     childRelation.getChildSObject().getDescribe().isUpdateable() && 
-//     childRelation.getChildSObject().getDescribe().isDeletable() && 
-//     childRelation.getChildSObject().getDescribe().isSearchable()){
-//         if (childRelation.getRelationshipName() != null){
-//             subqueries.add('(SELECT Id FROM ' + childRelation.getRelationshipName() + ')');
-//         }
-//     }
-// } 
-// System.debug(subqueries.size());
-// System.debug(subqueries);
-// String query = 'SELECT ' + String.join(subQueries, ',') + ' FROM ' +objectName+ ' WHERE Id = :recordId LIMIT 20';
-// return Database.Query(query);
-
-public inherited sharing class ChildObjectsController {
+public with sharing class ChildObjectsController {
 
     @AuraEnabled(cacheable=true)
-    public static Map<String, Integer> getRelatedChilds(Map<String, String> childRelationships, String recordId) {
-        Map<String, Integer> result = new Map<String, Integer>();
-        Integer numberOfEntries;
+    public static Map<String, Integer> getChildrelationships(Map<String, String> childRelationships, String recordId) {
+        Map<String, Integer> queryResult = new Map<String, Integer>();
+        Integer entryCounts;
         for(String childName : childRelationships.keyset()){
-            if(Schema.getGlobalDescribe().get(childName) == null 
-            || !Schema.getGlobalDescribe().get(childName).getDescribe().isQueryable() 
-            || !Schema.getGlobalDescribe().get(childName).getDescribe().isSearchable()){
-                continue;
+            if(Schema.getGlobalDescribe().get(childName) != null && 
+            Schema.getGlobalDescribe().get(childName).getDescribe().isQueryable() && 
+            Schema.getGlobalDescribe().get(childName).getDescribe().isSearchable()){
+                String relatedFieldName = childRelationships.get(childName);
+                String queryTemplate = 'SELECT ' + relatedFieldName + ' FROM ' + childName + ' WHERE ' + relatedFieldName + ' = ' + '\'' +  recordId + '\'';
+                List<SObject> queryRequest = Database.query(queryTemplate);
+                if(queryRequest != null){
+                    entryCounts = queryRequest.size();
+                }
+                if(entryCounts == 0){
+                    continue;
+                }
             }
-            String relatedFieldName = childRelationships.get(childName);
-            String queryTemplate = 'SELECT ' + relatedFieldName + ' FROM ' + childName + ' WHERE ' + relatedFieldName + ' = ' + '\'' +  recordId + '\'';
-            List<SObject> queryReply = Database.query(queryTemplate);
-            if(queryReply != null){
-                numberOfEntries = queryReply.size();
-            }
-            if(numberOfEntries == 0){
-                continue;
-            }
-            result.put(childName, numberOfEntries);
+            queryResult.put(childName, entryCounts);
         }
-        
-        return result;
+        return queryResult;
     }
 }
