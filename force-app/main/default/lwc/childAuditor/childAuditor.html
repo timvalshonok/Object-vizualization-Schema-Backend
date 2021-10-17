@@ -1,14 +1,18 @@
+<!-- <template>
+    <lightning-card title="Child auditor">
+        <template for:each={childObjects} for:item="object">
+            <p key={object.key}>{object.key} - {object.value} records</p>
+        </template>
+        <lightning-button class="button" label="Refresh" onclick={refreshComponent} variant="brand">
+        </lightning-button>
+    </lightning-card>
+</template> -->
+
 <template>
-    <!-- <template if:true={accountChildRecords.data}>
-        <table>
-            <template title="Child Auditor" for:each={accountRecordsCount} for:item="child">
-                <tr key={child.name}>
-                    <th>{child.name}:</th>
-                    <td>{child.length} records</td>
-                </tr>
-            </template>
-        </table>
-    </template> -->
-    <lightning-button class="button" label="Refresh" onclick={refreshComponent} variant="brand">
-    </lightning-button>
+    <lightning-card  title="Child auditor">
+        <template for:each={childObjects} for:item="object">
+            <p key={object.row}>{object.row} - {object.value} records</p> 
+        </template>
+        <lightning-button label="Refresh" variant="brand" onclick={refreshComponent}></lightning-button>
+    </lightning-card>
 </template>
