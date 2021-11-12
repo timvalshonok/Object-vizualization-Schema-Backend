@@ -1,8 +1,8 @@
 @isTest
-public with sharing class TestChildObjectsController {
+public with sharing class ChildObjectsControllerTest {
 
     @isTest
-    public static void TestGetChildRelationships() {
+    public static void getChildRelationshipsTest() {
         
         Map<String, String> childRelationships = new Map<String, String>{'Contact' => 'AccountId'};
         Map<String, Integer> expected = new Map<String, Integer>{'Contact' => 1};
