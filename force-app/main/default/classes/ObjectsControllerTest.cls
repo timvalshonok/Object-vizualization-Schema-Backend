@@ -1,5 +1,5 @@
 @isTest
-public with sharing class TestObjectsController {
+public with sharing class ObjectsControllerTest {
 
     @isTest public static void testGetAllObjects() {
 
