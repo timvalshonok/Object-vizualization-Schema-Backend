@@ -11,7 +11,7 @@ export default class ListObjects extends LightningElement {
 
     //in the code below we get all the objects and assign them id, name
     @wire(getAllObjects)
-    wiredObjectsResult(result){
+    wiredObjectsResult(result) {
         this.wiredObjects = result;
         const {data, error} = result;
         if (data) {
