@@ -10,23 +10,23 @@ import getChildrelationships from '@salesforce/apex/ChildObjectsController.getCh
     childObjects;
     objectResponse;
 
-    connectedCallback(){
+    connectedCallback() {
         [this.objectName, this.recordId] = window.location.pathname.split('/').slice(3,5);
     }
 
     @wire(getObjectInfo, {objectApiName: '$objectName'}) 
-    objectInfo(result){
+    objectInfo(result) {
         this.objectResponse = result;
-        if(result.data){
+        if(result.data) {
             this.showChildObjects(result.data.childRelationships);
             console.log(result.data);
         }
-        if(result.error){
+        if(result.error) {
             console.log(result.error);
         } 
     }
 
-    showChildObjects(data){
+    showChildObjects(data) {
         let childRelationships = {};
         data.forEach((child) => {
             childRelationships[child.childObjectApiName] = child.fieldName;
@@ -46,7 +46,7 @@ import getChildrelationships from '@salesforce/apex/ChildObjectsController.getCh
         })
     }
 
-    refreshComponent(){
+    refreshComponent() {
         refreshApex(this.objectResponse);
     }
 }
